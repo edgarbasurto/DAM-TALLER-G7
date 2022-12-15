@@ -3,28 +3,28 @@ package com.example.preguntas;
 import java.io.Serializable;
 
 public class Pregunta implements Serializable {
-    private String p;
-    private boolean r;
+    public String pregunta;
+    public String respuesta;
 
-    public Pregunta (String pregunta, boolean respuesta){
-        this.p = pregunta;
-        this.r = respuesta;
+    public Pregunta (String p, String r){
+        this.pregunta = p ;
+        this.respuesta = r;
     }
 
 
     public void setPregunta(String p) {
-        this.p = p;
+        this.pregunta = p;
     }
 
-    public boolean getRespuesta() {
-        return r;
-    }
-
-    public void setRespuesta(boolean r) {
-        this.r = r;
+    public void setRespuesta(String r) {
+        this.respuesta = r;
     }
 
     public String getPregunta() {
-        return p;
+        return pregunta;
     }
+
+    public String getRespuesta() {return respuesta;}
+
+
 }
