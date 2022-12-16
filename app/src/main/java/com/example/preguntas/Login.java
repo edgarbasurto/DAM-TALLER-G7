@@ -2,12 +2,15 @@ package com.example.preguntas;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.preguntas.R.id;
 
 import java.util.Arrays;
 
@@ -28,6 +31,7 @@ public class Login extends AppCompatActivity {
         //setSupportActionBar(myToolbar);
 
         Button btn_aceptar = (Button)findViewById(R.id.btn_aceptar);
+        Button btn_nuevo = (Button)findViewById(R.id.btn_nuevo);
         txt_nombre = (EditText) findViewById(R.id.txt_nombre);
         txt_clave = (EditText)findViewById(R.id.txt_password);
 
@@ -52,5 +56,15 @@ public class Login extends AppCompatActivity {
 
            }
         });
+
+        btn_nuevo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                Intent call_principal = new Intent(v.getContext(), Formulario.class);
+                startActivity(call_principal);
+
+            }
+        });
+
     }
 }

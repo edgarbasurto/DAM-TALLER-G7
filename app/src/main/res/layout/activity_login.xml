@@ -14,7 +14,7 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:subtitle="Desarrollo de Aplicaciones Móviles"
-        app:title="TALLER - GRUPO # 7" />
+        app:title="TAREA - GRUPO # 7" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,7 +36,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Usuario"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:minHeight="48dp" />
 
             <EditText
                 android:id="@+id/txt_password"
@@ -45,7 +46,8 @@
                 android:layout_marginTop="40px"
                 android:ems="10"
                 android:hint="Contraseña"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:minHeight="48dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -71,5 +73,16 @@
                 android:layout_weight="1"
                 android:text="CANCELAR" />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_nuevo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="150px"
+            android:backgroundTint="@color/teal_700"
+            android:backgroundTintMode="add"
+            android:text="REGISTRARSE"
+            app:icon="@android:drawable/btn_star_big_on"
+            app:iconGravity="textStart" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
