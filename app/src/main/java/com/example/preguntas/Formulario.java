@@ -56,7 +56,7 @@ public class Formulario extends AppCompatActivity implements
             public void onClick(View v){
                 Intent call_principal = new Intent(v.getContext(), Login.class);
                 startActivity(call_principal);
-                Toast.makeText(getApplicationContext(), "Se ha guardado con éxito", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Se ha guardado con éxito.", Toast.LENGTH_SHORT).show();
             }
         });
 
