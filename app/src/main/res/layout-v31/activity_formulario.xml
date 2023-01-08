@@ -132,6 +132,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/purple_700"
                 android:backgroundTintMode="add"
+                android:onClick="guardarSD"
                 android:text="Guardar"
                 app:icon="@android:drawable/ic_input_add"
                 app:iconGravity="textStart" />

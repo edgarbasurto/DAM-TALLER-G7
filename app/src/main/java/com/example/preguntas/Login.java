@@ -3,7 +3,9 @@ package com.example.preguntas;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,6 +39,8 @@ public class Login extends AppCompatActivity {
         Button btn_nuevo = (Button)findViewById(R.id.btn_nuevo);
         txt_nombre = (EditText) findViewById(R.id.txt_nombre);
         txt_clave = (EditText)findViewById(R.id.txt_password);
+
+        cargarPreferencias();
 
         btn_aceptar.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -73,6 +77,27 @@ public class Login extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         return true;
+    }
+
+    public void guardarPreferencias(){
+        SharedPreferences preferencias = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
+        String user_pref = txt_nombre.getText().toString();
+        String pass_pref = txt_clave.getText().toString();
+
+        SharedPreferences.Editor editor = preferencias.edit();
+        editor.putString("usuario",user_pref);
+        editor.putString("clave",pass_pref);
+        editor.commit();
+
+    }
+
+    public void cargarPreferencias(){
+        SharedPreferences preferencias = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
+        String usuario_tmp = preferencias.getString("usuario","");
+        String pass_tmp = preferencias.getString("clave","");
+
+        txt_nombre.setText(usuario_tmp);
+        txt_clave.setText(pass_tmp);
     }
 
     public boolean onOptionsItemSelected(MenuItem item){

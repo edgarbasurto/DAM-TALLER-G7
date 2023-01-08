@@ -4,7 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,7 +15,9 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.util.Arrays;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 
 public class Formulario extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener{
@@ -42,7 +45,7 @@ public class Formulario extends AppCompatActivity implements
         spin.setAdapter(aa);
 
         Button btn_cancelar_registro = (Button)findViewById(R.id.btn_cancelar_registro);
-        Button btn_guardar_registro = (Button)findViewById(R.id.btn_guardar);
+ //       Button btn_guardar_registro = (Button)findViewById(R.id.btn_guardar);
         btn_cancelar_registro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
@@ -51,15 +54,14 @@ public class Formulario extends AppCompatActivity implements
             }
         });
 
-        btn_guardar_registro.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-                Intent call_principal = new Intent(v.getContext(), Login.class);
-                startActivity(call_principal);
-                Toast.makeText(getApplicationContext(), "Se ha guardado con éxito.", Toast.LENGTH_SHORT).show();
-            }
-        });
-
+  //     btn_guardar_registro.setOnClickListener(new View.OnClickListener() {
+  //         @Override
+  //        public void onClick(View v){
+   //          Intent call_principal = new Intent(v.getContext(), Login.class);
+  //            startActivity(call_principal);
+   //         Toast.makeText(getApplicationContext(), "Se ha guardado con éxito.", Toast.LENGTH_SHORT).show();
+   //    }
+   //  });
 
     }
 
@@ -89,7 +91,7 @@ public class Formulario extends AppCompatActivity implements
         }
     }
 
-    public void reset(View view){
+    public void reset(View v){
         txt_nombre = (EditText) findViewById(R.id.txt_nombres);
         txt_apellido = (EditText) findViewById(R.id.txt_apellidos);
         txt_edad = (EditText) findViewById(R.id.txt_edad);
@@ -107,5 +109,54 @@ public class Formulario extends AppCompatActivity implements
         txt_contrasenia.setText("");
         //rdb_masculino = (RadioButton) findViewById(R.id.rdb_masculino;
         //rdb_femenino = (RadioButton) findViewById(R.id.rdb_femenino;
+
+    }
+
+    public void guardarSD(View v)
+    {
+        int statusSD = verificarEstado();
+        String info;
+
+        if (statusSD == 0){
+            try {
+                File f = new File(getExternalFilesDir(null),"prueba_sd.txt");
+                OutputStreamWriter fout = new OutputStreamWriter(new FileOutputStream(f,true));
+
+                info = txt_nombre.getText().toString() + ";" + txt_apellido.getText().toString() + ";" +
+                        txt_edad.getText().toString() + ";" + txt_correo.getText().toString() + ";" +
+                        txt_telefono.getText().toString() + ";" + txt_contrasenia.getText().toString() + "\n";
+                fout.write(info);
+                fout.close();
+                Toast.makeText(getApplicationContext(),"Guardado en SD con éxito",Toast.LENGTH_SHORT).show();
+
+
+            }catch (Exception ex){
+                Log.e("Ficheros","Error al escrbir fichero");
+
+            }
+
+        }
+        else{
+            Toast.makeText(getApplicationContext(),"No se puede guardar",Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+
+    private int verificarEstado() {
+        String estado = Environment.getExternalStorageState();
+
+        if (estado.equals(Environment.MEDIA_MOUNTED)){
+            Toast.makeText(getApplicationContext(),"Montando en SD",Toast.LENGTH_SHORT).show();
+            return 0;
+        }
+        else if (estado.equals(Environment.MEDIA_MOUNTED_READ_ONLY)){
+            Toast.makeText(getApplicationContext(),"Montado solo lectura",Toast.LENGTH_SHORT).show();
+            return 1;
+        }
+        else {
+            Toast.makeText(getApplicationContext(),"No está montado",Toast.LENGTH_SHORT).show();
+            return 2;
+        }
     }
 }
