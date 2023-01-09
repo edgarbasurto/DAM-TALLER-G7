@@ -2,6 +2,8 @@ package com.example.preguntas;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +27,7 @@ public class Activity_preguntas extends AppCompatActivity {
 
         Button btnVerdadero = (Button)findViewById(R.id.btn_verdadero);
         Button btnFalso = (Button)findViewById(R.id.btn_falso);
+        Button btnBorrarDatos = (Button)findViewById(R.id.btn_eliminar_datos);
 
         TextView txtjugador = (TextView) findViewById(R.id.txt_jugador);
         final TextView txtpregunta = (TextView) findViewById(R.id.txt_pregunta);
@@ -37,7 +40,17 @@ public class Activity_preguntas extends AppCompatActivity {
         String nombre_jugador = bundle.getString("name_usuario");
         txtjugador.setText("Jugador: " + nombre_jugador);
 
+        btnBorrarDatos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences preferencias = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
 
+                SharedPreferences.Editor editor = preferencias.edit();
+                editor.putString("usuario","");
+                editor.putString("clave","");
+                editor.commit();
+            }
+        });
 
 
         //EventoClick

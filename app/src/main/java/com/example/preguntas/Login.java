@@ -1,9 +1,11 @@
 package com.example.preguntas;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -51,9 +53,7 @@ public class Login extends AppCompatActivity {
                                .findFirst().orElse(null);
                if (search != null) {
                    if (search.getContrasenia().equals(txt_clave.getText().toString())){
-                       Intent call_principal = new Intent(v.getContext(), Activity_preguntas.class);
-                       call_principal.putExtra("name_usuario", search.getNombresCompletos());
-                       startActivity(call_principal);
+                       mostrarDialogConfirm(search, v);
                    }else{
                        Toast.makeText(getApplicationContext(), "Contraseña incorrecta", Toast.LENGTH_SHORT).show();
                    }
@@ -73,6 +73,41 @@ public class Login extends AppCompatActivity {
             }
         });
     }
+
+    private void GoToActivityPreguntas (Usuario user, View vista){
+        Intent call_principal = new Intent(vista.getContext(), Activity_preguntas.class);
+        call_principal.putExtra("name_usuario", user.getNombresCompletos());
+        startActivity(call_principal);
+    }
+
+
+    private void mostrarDialogConfirm(Usuario _user, View _vista){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
+        builder.setTitle("Guardar datos");
+        builder.setMessage("¿Desea guardar los datos registrados?")
+                .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        guardarPreferencias();
+                        Toast.makeText(getApplicationContext(), "Datos guardados exitosamente", Toast.LENGTH_SHORT).show();
+                        GoToActivityPreguntas(_user, _vista);
+
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        Toast.makeText(getApplicationContext(), "Cancelado", Toast.LENGTH_SHORT).show();
+                        dialogInterface.dismiss();
+
+                    }
+                })
+                .setCancelable(false)
+                .show();
+    }
+
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
