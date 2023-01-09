@@ -82,7 +82,6 @@ public class Login extends AppCompatActivity {
 
 
     private void mostrarDialogConfirm(Usuario _user, View _vista){
-
         AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
         builder.setTitle("Guardar datos");
         builder.setMessage("¿Desea guardar los datos registrados?")

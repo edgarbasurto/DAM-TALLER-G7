@@ -1,7 +1,9 @@
 package com.example.preguntas;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -15,8 +17,12 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 public class Formulario extends AppCompatActivity implements
@@ -110,6 +116,48 @@ public class Formulario extends AppCompatActivity implements
         //rdb_masculino = (RadioButton) findViewById(R.id.rdb_masculino;
         //rdb_femenino = (RadioButton) findViewById(R.id.rdb_femenino;
 
+    }
+
+    public void cargarDatos(View v){
+        File file =new  File(getExternalFilesDir(null), "prueba_3.txt");
+        try {
+            FileInputStream fIn = new FileInputStream(file);
+            InputStreamReader archivo = new InputStreamReader(fIn);
+            BufferedReader br = new BufferedReader(archivo);
+            String linea = br.readLine();
+            String todo = "";
+            while (linea != null) {
+                todo = todo + linea + " ";
+                linea = br.readLine();
+            }
+            br.close();
+            archivo.close();
+            mostrarDialogDatos(todo);
+           // et2.setText(todo);
+
+        } catch (IOException e) {
+            Toast.makeText(this, "No se pudo leer",
+                    Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private void mostrarDialogDatos(String datos){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(Formulario.this);
+        builder.setTitle("Recuperando datos SD");
+        builder.setMessage(datos.replace(";", "\n"))
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        Toast.makeText(getApplicationContext(), "Cancelado", Toast.LENGTH_SHORT).show();
+                        dialogInterface.dismiss();
+
+                    }
+                })
+                .setCancelable(false)
+                .show();
     }
 
     public void guardarSD(View v)
