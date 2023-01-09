@@ -117,14 +117,23 @@ public class Formulario extends AppCompatActivity implements
         int statusSD = verificarEstado();
         String info;
 
+        txt_nombre = (EditText) findViewById(R.id.txt_nombres);
+        txt_apellido = (EditText) findViewById(R.id.txt_apellidos);
+        txt_edad = (EditText) findViewById(R.id.txt_edad);
+        txt_correo = (EditText) findViewById(R.id.txt_correo);
+        txt_telefono = (EditText) findViewById(R.id.txt_telefono);
+        txt_contrasenia = (EditText) findViewById(R.id.txt_contrasenia);
+
         if (statusSD == 0){
             try {
-                File f = new File(getExternalFilesDir(null),"prueba_sd.txt");
+                File f = new File(getExternalFilesDir(null),"prueba_3.txt");
                 OutputStreamWriter fout = new OutputStreamWriter(new FileOutputStream(f,true));
 
                 info = txt_nombre.getText().toString() + ";" + txt_apellido.getText().toString() + ";" +
                         txt_edad.getText().toString() + ";" + txt_correo.getText().toString() + ";" +
                         txt_telefono.getText().toString() + ";" + txt_contrasenia.getText().toString() + "\n";
+
+
                 fout.write(info);
                 fout.close();
                 Toast.makeText(getApplicationContext(),"Guardado en SD con éxito",Toast.LENGTH_SHORT).show();
@@ -159,4 +168,7 @@ public class Formulario extends AppCompatActivity implements
             return 2;
         }
     }
+
+
+
 }
