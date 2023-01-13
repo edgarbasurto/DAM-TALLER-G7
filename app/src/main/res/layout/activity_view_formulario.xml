@@ -31,26 +31,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="15px"
+                android:layout_marginTop="15dp"
                 android:orientation="horizontal">
 
                 <EditText
                     android:id="@+id/txtCedula"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:autofillHints="Digite un valor"
                     android:ems="10"
                     android:hint="Digite un valor"
                     android:inputType="phone"
-                    android:minHeight="48dp" />
+                    android:minHeight="48dp"
+                    tools:ignore="TextContrastCheck" />
 
                 <Button
                     android:id="@+id/btnBuscar"
                     android:layout_width="62dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5px"
-                    android:hint="..."
+                    android:layout_marginLeft="5dp"
                     android:onClick="onBuscar"
-                    app:icon="?android:attr/actionModeFindDrawable" />
+                    app:icon="?android:attr/actionModeWebSearchDrawable"
+                    tools:ignore="SpeakableTextPresentCheck" />
 
             </LinearLayout>
 
@@ -64,45 +66,139 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/grav"
                     android:layout_width="357dp"
-                    android:layout_height="316dp"
-                    android:layout_gravity="center">
+                    android:layout_height="426dp"
+                    android:layout_gravity="center"
+                    app:contentPadding="8dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginTop="25dp"
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/lblCedula"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Cédula"
+                            android:textAlignment="textStart"
+                            android:textSize="18sp" />
+
+                        <EditText
                             android:id="@+id/txtNombre"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textAlignment="textStart"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:ems="10"
+                            android:hint="Nombres"
+                            android:importantForAutofill="no"
+                            android:inputType="textPersonName"
+                            android:minHeight="48dp" />
 
-                        <TextView
-                            android:id="@+id/txtTelefono"
+                        <EditText
+                            android:id="@+id/txtApellido"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textAlignment="textStart"
-                            android:textSize="14sp" />
+                            android:ems="10"
+                            android:hint="Apellidos"
+                            android:importantForAutofill="no"
+                            android:inputType="textPersonName"
+                            android:minHeight="48dp" />
 
-                        <TextView
-                            android:id="@+id/txtEmail"
+                        <EditText
+                            android:id="@+id/txtEdad"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textAlignment="textStart"
-                            android:textSize="14sp" />
+                            android:ems="10"
+                            android:hint="Edad"
+                            android:inputType="number"
+                            android:minHeight="48dp" />
 
-                        <TextView
-                            android:id="@+id/txtGenero"
+                        <EditText
+                            android:id="@+id/txtCorreo"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textAlignment="textStart"
-                            android:textSize="14sp" />
+                            android:ems="10"
+                            android:hint="Correo electrónico"
+                            android:inputType="textEmailAddress"
+                            android:minHeight="48dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/txtTelefono"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:hint="Celular"
+                                android:inputType="phone"
+                                android:minHeight="48dp" />
+
+                            <Spinner
+                                android:id="@+id/spn_tipo_telefono"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:minHeight="48dp"
+                                tools:ignore="SpeakableTextPresentCheck"
+                                tools:visibility="gone" />
+
+                        </LinearLayout>
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="68dp"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/btnActualizar"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="5dp"
+                                android:backgroundTint="@color/purple_700"
+                                android:foregroundTint="@color/white"
+                                android:onClick="onActualizar"
+                                android:text="Actualizar"
+                                app:icon="@android:drawable/ic_menu_save"
+                                app:iconTint="@color/white" />
+
+                            <Button
+                                android:id="@+id/btnEliminar"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:backgroundTint="@color/purple_200"
+                                android:foregroundTint="@color/white"
+                                android:onClick="onEliminar"
+                                android:text="ELIMINAR"
+                                app:icon="@android:drawable/ic_menu_delete"
+                                app:iconTint="@color/white" />
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/btn_cancelarRegistro"
+                            android:layout_width="match_parent"
+                            android:layout_height="31dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:backgroundTint="@color/teal_700"
+                            android:forceHasOverlappingRendering="true"
+                            android:text="Cancelar"
+                            app:icon="@android:drawable/ic_delete"
+                            app:iconGravity="textStart" />
+
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
+
             </LinearLayout>
 
         </LinearLayout>

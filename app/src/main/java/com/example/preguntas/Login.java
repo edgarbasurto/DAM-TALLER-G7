@@ -3,7 +3,6 @@ package com.example.preguntas;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,8 +15,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import com.example.preguntas.R.id;
 
 import java.util.Arrays;
 
@@ -39,7 +36,7 @@ public class Login extends AppCompatActivity {
 
         Button btn_aceptar = (Button)findViewById(R.id.btn_aceptar);
         Button btn_nuevo = (Button)findViewById(R.id.btn_nuevo);
-        txt_nombre = (EditText) findViewById(R.id.txt_nombre);
+        txt_nombre = (EditText) findViewById(R.id.txtNombre);
         txt_clave = (EditText)findViewById(R.id.txt_password);
 
         cargarPreferencias();
@@ -112,7 +109,10 @@ public class Login extends AppCompatActivity {
         inflater.inflate(R.menu.menu, menu);
         return true;
     }
-
+    public void onBuscarDatos(View v){
+        Intent call_BuscarDatos = new Intent(v.getContext(), ViewFormularioActivity.class);
+        startActivity(call_BuscarDatos);
+    }
     public void guardarPreferencias(){
         SharedPreferences preferencias = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
         String user_pref = txt_nombre.getText().toString();

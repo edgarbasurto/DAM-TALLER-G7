@@ -31,7 +31,7 @@
             android:orientation="vertical">
 
             <EditText
-                android:id="@+id/txt_nombre"
+                android:id="@+id/txtNombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -83,6 +83,18 @@
             android:backgroundTintMode="add"
             android:text="REGISTRARSE"
             app:icon="@android:drawable/btn_star_big_on"
+            app:iconGravity="textStart" />
+
+        <Button
+            android:id="@+id/btn_recuperar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="150px"
+            android:backgroundTint="@color/purple_200"
+            android:backgroundTintMode="add"
+            android:onClick="onBuscarDatos"
+            android:text="BUSCAR"
+            app:icon="@android:drawable/ic_menu_search"
             app:iconGravity="textStart" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

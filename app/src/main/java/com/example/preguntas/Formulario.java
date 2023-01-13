@@ -4,7 +4,6 @@ import static java.lang.Integer.parseInt;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.database.sqlite.SQLiteDatabaseKt;
 
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -117,7 +116,7 @@ public class Formulario extends AppCompatActivity implements
         txt_apellido = (EditText) findViewById(R.id.txt_apellidos);
         txt_edad = (EditText) findViewById(R.id.txt_edad);
         txt_correo = (EditText) findViewById(R.id.txt_correo);
-        txt_telefono = (EditText) findViewById(R.id.txt_telefono);
+        txt_telefono = (EditText) findViewById(R.id.txtTelefono);
         txt_contrasenia = (EditText) findViewById(R.id.txt_contrasenia);
         rdb_masculino = (RadioButton) findViewById(R.id.rdb_masculino);
         rdb_femenino = (RadioButton) findViewById(R.id.rdb_femenino);
@@ -136,10 +135,7 @@ public class Formulario extends AppCompatActivity implements
 
     }
 
-    public void onBuscarDatos(View v){
-        Intent call_BuscarDatos = new Intent(v.getContext(), ViewFormularioActivity.class);
-        startActivity(call_BuscarDatos);
-    }
+
 
     public void cargarDatos(View v){
         File file =new  File(getExternalFilesDir(null), "prueba_3.txt");
@@ -231,7 +227,7 @@ public class Formulario extends AppCompatActivity implements
         txt_apellido = (EditText) findViewById(R.id.txt_apellidos);
         txt_edad = (EditText) findViewById(R.id.txt_edad);
         txt_correo = (EditText) findViewById(R.id.txt_correo);
-        txt_telefono = (EditText) findViewById(R.id.txt_telefono);
+        txt_telefono = (EditText) findViewById(R.id.txtTelefono);
         txt_contrasenia = (EditText) findViewById(R.id.txt_contrasenia);
         int edad= Integer.parseInt( txt_edad.getText().toString());
 
@@ -290,7 +286,7 @@ public class Formulario extends AppCompatActivity implements
         txt_apellido = (EditText) findViewById(R.id.txt_apellidos);
         txt_edad = (EditText) findViewById(R.id.txt_edad);
         txt_correo = (EditText) findViewById(R.id.txt_correo);
-        txt_telefono = (EditText) findViewById(R.id.txt_telefono);
+        txt_telefono = (EditText) findViewById(R.id.txtTelefono);
         txt_contrasenia = (EditText) findViewById(R.id.txt_contrasenia);
 
         if (statusSD == 0){
