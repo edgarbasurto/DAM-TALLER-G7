@@ -9,6 +9,7 @@ import androidx.core.database.sqlite.SQLiteDatabaseKt;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Environment;
@@ -40,6 +41,8 @@ public class Formulario extends AppCompatActivity implements
     EditText txt_correo;
     EditText txt_telefono;
     EditText txt_contrasenia;
+    String txt_generoSelected;
+    String txt_operadoraSelected;
     RadioButton rdb_masculino;
     RadioButton rdb_femenino;
 
@@ -50,6 +53,8 @@ public class Formulario extends AppCompatActivity implements
         Spinner spin = (Spinner) findViewById(R.id.spn_tipo_telefono);
         spin.setOnItemSelectedListener(this);
 
+        txt_generoSelected="";
+        txt_operadoraSelected="";
         //Creating the ArrayAdapter instance having the country list
         ArrayAdapter aa = new ArrayAdapter(this,android.R.layout.simple_spinner_item,operadoras);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -80,7 +85,8 @@ public class Formulario extends AppCompatActivity implements
     //Performing action onItemSelected and onNothing selected
     @Override
     public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
-        Toast.makeText(getApplicationContext(),operadoras[position] , Toast.LENGTH_LONG).show();
+        txt_operadoraSelected= operadoras[position];
+        Toast.makeText(getApplicationContext(),txt_operadoraSelected, Toast.LENGTH_LONG).show();
     }
     @Override
     public void onNothingSelected(AdapterView<?> arg0) {
@@ -93,11 +99,13 @@ public class Formulario extends AppCompatActivity implements
         switch (view.getId()){
             case R.id.rdb_masculino:
                 if (checked)
-                    Toast.makeText(getApplicationContext(), "Seleccionó Masculino", Toast.LENGTH_SHORT).show();
+                    txt_generoSelected="Masculino";
+                Toast.makeText(getApplicationContext(), "Seleccionó Masculino", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.rdb_femenino:
                 if(checked)
-                    Toast.makeText(getApplicationContext(), "Seleccionó Femenino", Toast.LENGTH_SHORT).show();
+                    txt_generoSelected="Femenino";
+                Toast.makeText(getApplicationContext(), "Seleccionó Femenino", Toast.LENGTH_SHORT).show();
                 break;
 
         }
@@ -114,6 +122,8 @@ public class Formulario extends AppCompatActivity implements
         rdb_masculino = (RadioButton) findViewById(R.id.rdb_masculino);
         rdb_femenino = (RadioButton) findViewById(R.id.rdb_femenino);
 
+        txt_generoSelected="";
+        txt_operadoraSelected="";
         txt_cedula.setText("");
         txt_nombre.setText("");
         txt_apellido.setText("");
@@ -124,6 +134,11 @@ public class Formulario extends AppCompatActivity implements
         //rdb_masculino = (RadioButton) findViewById(R.id.rdb_masculino;
         //rdb_femenino = (RadioButton) findViewById(R.id.rdb_femenino;
 
+    }
+
+    public void onBuscarDatos(View v){
+        Intent call_BuscarDatos = new Intent(v.getContext(), ViewFormularioActivity.class);
+        startActivity(call_BuscarDatos);
     }
 
     public void cargarDatos(View v){
@@ -168,11 +183,49 @@ public class Formulario extends AppCompatActivity implements
                 .show();
     }
 
+
+    //metodo para validar al guardar
+    private  boolean isValido() {
+
+        if (txt_generoSelected == "") {
+            Toast.makeText(getApplicationContext(), "Debe seleccionar el tipo de género", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (txt_operadoraSelected == "") {
+            Toast.makeText(getApplicationContext(), "Debe seleccionar una operadora movil", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        //valida si existe cedula en la BD
+        MySQLiteService dbService = new MySQLiteService(this);
+        final SQLiteDatabase bd = dbService.getWritableDatabase();
+        String cedula=txt_cedula.getText().toString();
+        if ( cedula == "") {
+            Toast.makeText(getApplicationContext(), "Debe ingresar una cédula", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (bd != null) {
+            Cursor cur= bd.rawQuery("SELECT _id, cedula, nombre FROM Usuarios WHERE  cedula LIKE '%"+ cedula+"%'", null);
+            if (cur!= null ){
+                int rows=cur.getCount();
+                if (rows>=1){
+                    Toast.makeText(getApplicationContext(), "Cédula ya se encuentra registrada", Toast.LENGTH_SHORT).show();
+                    cur.close();
+                    return false;
+                }
+            }
+            cur.close();
+        }
+        bd.close();
+        return true;
+    }
+
+
+
+
     //Metodo para guardar en Base de datos
     public void guardarBD(View v)
     {
-        int statusSD = verificarEstado();
-        String info;
         txt_cedula = (EditText) findViewById(R.id.txt_cedula);
         txt_nombre = (EditText) findViewById(R.id.txt_nombres);
         txt_apellido = (EditText) findViewById(R.id.txt_apellidos);
@@ -181,37 +234,49 @@ public class Formulario extends AppCompatActivity implements
         txt_telefono = (EditText) findViewById(R.id.txt_telefono);
         txt_contrasenia = (EditText) findViewById(R.id.txt_contrasenia);
         int edad= Integer.parseInt( txt_edad.getText().toString());
-        // Intancia del servicio de SQLite
-        MySQLiteService dbService= new MySQLiteService(this);
-        final SQLiteDatabase bd = dbService.getWritableDatabase();
-        if (bd != null){
-            try {
-                //Operaciones de asignacion de valores en los campos
-                ContentValues cv= new ContentValues();
-                cv.put("cedula", txt_cedula.getText().toString());
-                cv.put("nombre", txt_nombre.getText().toString());
-                cv.put("apellido", txt_apellido.getText().toString());
-                cv.put("edad",edad);
-                cv.put("telefono",txt_telefono.getText().toString());
-                cv.put("correo",txt_correo.getText().toString());
-                cv.put("sexo","");
-                cv.put("password",txt_contrasenia.getText().toString());
 
-                // Se inserta el registro
-  bd.insert("Usuarios" , null, cv);
-                Toast.makeText(getApplicationContext(),"Usuario almacenado correctamente",Toast.LENGTH_SHORT).show();
+        if (isValido()) {
+
+            // Intancia del servicio de SQLite
+            MySQLiteService dbService = new MySQLiteService(this);
+            final SQLiteDatabase bd = dbService.getWritableDatabase();
+            if (bd != null) {
+                try {
+                    //Operaciones de asignacion de valores en los campos
+                    ContentValues cv = new ContentValues();
+                    cv.put("cedula", txt_cedula.getText().toString());
+                    cv.put("nombre", txt_nombre.getText().toString());
+                    cv.put("apellido", txt_apellido.getText().toString());
+                    cv.put("edad", edad);
+                    cv.put("telefono", txt_telefono.getText().toString());
+                    cv.put("correo", txt_correo.getText().toString());
+                    cv.put("genero", txt_generoSelected);
+                    cv.put("operadora", txt_operadoraSelected);
+                    cv.put("password", txt_contrasenia.getText().toString());
+
+                    // Se inserta el registro
+                    bd.insert("Usuarios", null, cv);
+                    Toast.makeText(getApplicationContext(), "Usuario almacenado correctamente", Toast.LENGTH_SHORT).show();
 
 
-            }catch (Exception ex){
-                Log.e("Base de datos","Error al escribir en la base | Exception: " + ex.getMessage() );
+                } catch (Exception ex) {
+                    Log.e("Base de datos", "Error al escribir en la base | Exception: " + ex.getMessage());
+                }
 
+                txt_generoSelected="";
+                txt_operadoraSelected="";
+                txt_cedula.setText("");
+                txt_nombre.setText("");
+                txt_apellido.setText("");
+                txt_edad.setText("");
+                txt_correo.setText("");
+                txt_telefono.setText("");
+                txt_contrasenia.setText("");
+            } else {
+                Toast.makeText(getApplicationContext(), "No se puede guardar", Toast.LENGTH_SHORT).show();
             }
-
+            bd.close();
         }
-        else{
-            Toast.makeText(getApplicationContext(),"No se puede guardar",Toast.LENGTH_SHORT).show();
-        }
-
     }
 
 

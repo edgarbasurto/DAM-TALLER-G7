@@ -151,7 +151,7 @@
                 android:id="@+id/btn_recuperar_datos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="cargarDatos"
+                android:onClick="onBuscarDatos"
                 android:text="Recuperar Datos" />
 
             <LinearLayout

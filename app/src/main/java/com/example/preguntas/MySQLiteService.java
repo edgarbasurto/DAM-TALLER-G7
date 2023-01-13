@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 public class MySQLiteService extends SQLiteOpenHelper {
-    private static final String USER_TABLE_CREATE = "CREATE TABLE Usuarios(_id INTEGER PRIMARY KEY AUTOINCREMENT, cedula TEXT,nombre TEXT, apellido TEXT, edad INTEGER,telefono TEXT,correo TEXT,sexo TEXT,password TEXT)";
+    private static final String USER_TABLE_CREATE = "CREATE TABLE Usuarios(_id INTEGER PRIMARY KEY AUTOINCREMENT, cedula TEXT,nombre TEXT, apellido TEXT, edad INTEGER,telefono TEXT,correo TEXT,genero TEXT,operadora TEXT,password TEXT)";
     private static final String DB_NAME = "tallerDML.sqlite";
     private static final int DB_VERSION = 1;
 
