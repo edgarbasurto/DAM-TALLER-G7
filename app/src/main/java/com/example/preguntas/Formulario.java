@@ -1,10 +1,15 @@
 package com.example.preguntas;
 
+import static java.lang.Integer.parseInt;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.database.sqlite.SQLiteDatabaseKt;
 
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -28,6 +33,7 @@ import java.io.OutputStreamWriter;
 public class Formulario extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener{
     String[] operadoras = { "Claro", "Movistar", "CNT", "Tuenti", "Otro"};
+    EditText txt_cedula;
     EditText txt_nombre;
     EditText txt_apellido;
     EditText txt_edad;
@@ -51,7 +57,7 @@ public class Formulario extends AppCompatActivity implements
         spin.setAdapter(aa);
 
         Button btn_cancelar_registro = (Button)findViewById(R.id.btn_cancelar_registro);
- //       Button btn_guardar_registro = (Button)findViewById(R.id.btn_guardar);
+        //       Button btn_guardar_registro = (Button)findViewById(R.id.btn_guardar);
         btn_cancelar_registro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
@@ -60,14 +66,14 @@ public class Formulario extends AppCompatActivity implements
             }
         });
 
-  //     btn_guardar_registro.setOnClickListener(new View.OnClickListener() {
-  //         @Override
-  //        public void onClick(View v){
-   //          Intent call_principal = new Intent(v.getContext(), Login.class);
-  //            startActivity(call_principal);
-   //         Toast.makeText(getApplicationContext(), "Se ha guardado con éxito.", Toast.LENGTH_SHORT).show();
-   //    }
-   //  });
+        //     btn_guardar_registro.setOnClickListener(new View.OnClickListener() {
+        //         @Override
+        //        public void onClick(View v){
+        //          Intent call_principal = new Intent(v.getContext(), Login.class);
+        //            startActivity(call_principal);
+        //         Toast.makeText(getApplicationContext(), "Se ha guardado con éxito.", Toast.LENGTH_SHORT).show();
+        //    }
+        //  });
 
     }
 
@@ -98,6 +104,7 @@ public class Formulario extends AppCompatActivity implements
     }
 
     public void reset(View v){
+        txt_cedula = (EditText) findViewById(R.id.txt_cedula);
         txt_nombre = (EditText) findViewById(R.id.txt_nombres);
         txt_apellido = (EditText) findViewById(R.id.txt_apellidos);
         txt_edad = (EditText) findViewById(R.id.txt_edad);
@@ -107,6 +114,7 @@ public class Formulario extends AppCompatActivity implements
         rdb_masculino = (RadioButton) findViewById(R.id.rdb_masculino);
         rdb_femenino = (RadioButton) findViewById(R.id.rdb_femenino);
 
+        txt_cedula.setText("");
         txt_nombre.setText("");
         txt_apellido.setText("");
         txt_edad.setText("");
@@ -133,7 +141,7 @@ public class Formulario extends AppCompatActivity implements
             br.close();
             archivo.close();
             mostrarDialogDatos(todo);
-           // et2.setText(todo);
+            // et2.setText(todo);
 
         } catch (IOException e) {
             Toast.makeText(this, "No se pudo leer",
@@ -159,6 +167,54 @@ public class Formulario extends AppCompatActivity implements
                 .setCancelable(false)
                 .show();
     }
+
+    //Metodo para guardar en Base de datos
+    public void guardarBD(View v)
+    {
+        int statusSD = verificarEstado();
+        String info;
+        txt_cedula = (EditText) findViewById(R.id.txt_cedula);
+        txt_nombre = (EditText) findViewById(R.id.txt_nombres);
+        txt_apellido = (EditText) findViewById(R.id.txt_apellidos);
+        txt_edad = (EditText) findViewById(R.id.txt_edad);
+        txt_correo = (EditText) findViewById(R.id.txt_correo);
+        txt_telefono = (EditText) findViewById(R.id.txt_telefono);
+        txt_contrasenia = (EditText) findViewById(R.id.txt_contrasenia);
+        int edad= Integer.parseInt( txt_edad.getText().toString());
+        // Intancia del servicio de SQLite
+        MySQLiteService dbService= new MySQLiteService(this);
+        final SQLiteDatabase bd = dbService.getWritableDatabase();
+        if (bd != null){
+            try {
+                //Operaciones de asignacion de valores en los campos
+                ContentValues cv= new ContentValues();
+                cv.put("cedula", txt_cedula.getText().toString());
+                cv.put("nombre", txt_nombre.getText().toString());
+                cv.put("apellido", txt_apellido.getText().toString());
+                cv.put("edad",edad);
+                cv.put("telefono",txt_telefono.getText().toString());
+                cv.put("correo",txt_correo.getText().toString());
+                cv.put("sexo","");
+                cv.put("password",txt_contrasenia.getText().toString());
+
+                // Se inserta el registro
+  bd.insert("Usuarios" , null, cv);
+                Toast.makeText(getApplicationContext(),"Usuario almacenado correctamente",Toast.LENGTH_SHORT).show();
+
+
+            }catch (Exception ex){
+                Log.e("Base de datos","Error al escribir en la base | Exception: " + ex.getMessage() );
+
+            }
+
+        }
+        else{
+            Toast.makeText(getApplicationContext(),"No se puede guardar",Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+
 
     public void guardarSD(View v)
     {

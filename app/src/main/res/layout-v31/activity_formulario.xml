@@ -30,6 +30,16 @@
             android:paddingTop="100px">
 
             <EditText
+                android:id="@+id/txt_cedula"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Cédula"
+                android:inputType="phone"
+                android:maxLength="10"
+                android:minHeight="48dp" />
+
+            <EditText
                 android:id="@+id/txt_nombres"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -132,7 +142,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/purple_700"
                 android:backgroundTintMode="add"
-                android:onClick="guardarSD"
+                android:onClick="guardarBD"
                 android:text="Guardar"
                 app:icon="@android:drawable/ic_input_add"
                 app:iconGravity="textStart" />
